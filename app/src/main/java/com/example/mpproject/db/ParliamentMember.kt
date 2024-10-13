@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// 29.09.2024 by Arman Yerkeshev 2214297
+// 05.10.2024 by Hafiz
 // Class, representing single parliament member, which can be stored in a database
 @Entity
 data class ParliamentMember(

@@ -8,8 +8,9 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
-// 29.09.2024 by Arman Yerkeshev 2214297
+// 09.10.2024 by Hafiz
 // Data Access Object for ParliamentMember class
+
 @Dao
 interface ParliamentMemberDao {
     @Query("SELECT * FROM parliamentmember")

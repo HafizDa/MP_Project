@@ -7,13 +7,13 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.mpproject.PMApplication
-import com.example.mpproject.NetworkAPI
+import com.example.mpproject.network.NetworkAPI
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-// 28.09.2024 by Arman Yerkeshev 2214297
-// This is class is responsible for periodically synchronizing the local database with the server
+// 02.10.2024 by Hafiz
 object DBSynchronizer {
     fun start() {
         val uploadRequest = PeriodicWorkRequestBuilder<DBWorker>(15, TimeUnit.MINUTES).build()
@@ -22,12 +22,12 @@ object DBSynchronizer {
     }
 }
 
-// 29.09.2024 by Arman Yerkeshev 2214297
-// This class fetches data from the server and saves it to local database
+// 02.10.2024 by Hafiz
 class DBWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
+    @OptIn(DelicateCoroutinesApi::class)
     override fun doWork(): Result {
-        val db = PMDatabase.getInstance()
-        val dao = db.memberDao()
+        val db = PMDatabase.getInstance(applicationContext)
+        val dao = db.parliamentMemberDao()
 
         try {
             GlobalScope.launch {
@@ -37,9 +37,7 @@ class DBWorker(context: Context, workerParams: WorkerParameters) : Worker(contex
                 }
 
                 val extraData = NetworkAPI.apiService.loadExtraData()?.execute()?.body()
-                if (extraData == null) {
-                    throw Exception("Failed to fetch extra data")
-                }
+                    ?: throw Exception("Failed to fetch extra data")
 
                 // Add extra data to parliament members' list
                 parliamentMembers = parliamentMembers.map { memberData1: ParliamentMember ->

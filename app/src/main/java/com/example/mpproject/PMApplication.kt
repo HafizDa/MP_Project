@@ -2,16 +2,18 @@ package com.example.mpproject
 
 import android.app.Application
 import android.content.Context
+import com.example.mpproject.db.DBSynchronizer
 
-class PMApplication : Application() {
-
+// 13.10.2024 by Hafiz
+// Helper class to easily access application context. Launches DBSynchronizer on application start
+class PMApplication : Application(){
     companion object {
         lateinit var appContext: Context
-            private set
     }
 
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
+        DBSynchronizer.start()
     }
 }

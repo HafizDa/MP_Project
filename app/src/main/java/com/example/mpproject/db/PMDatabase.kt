@@ -1,29 +1,31 @@
+
 package com.example.mpproject.db
 
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.mpproject.PMApplication
+import android.content.Context
 
-// 29.09.2024 by Arman Yerkeshev 2214297
-// Database class, representing the local database
+// 09.10.2024 by Hafiz
+
 @Database(entities = [ParliamentMember::class], version = 1)
 abstract class PMDatabase : RoomDatabase() {
-    abstract fun memberDao(): ParliamentMemberDao
+    abstract fun parliamentMemberDao(): ParliamentMemberDao
 
     companion object {
         @Volatile
-        private var Instance: PMDatabase? = null
+        private var INSTANCE: PMDatabase? = null
 
-        fun getInstance(): PMDatabase {
-            if (Instance == null) {
-                synchronized(this) {
-                    Instance = Room.databaseBuilder(
-                        PMApplication.appContext, PMDatabase::class.java, "eduskunta-db"
-                    ).build()
-                }
+        fun getInstance(context: Context): PMDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    PMDatabase::class.java,
+                    "pm_database"
+                ).build()
+                INSTANCE = instance
+                instance
             }
-            return Instance!!
         }
     }
 }
