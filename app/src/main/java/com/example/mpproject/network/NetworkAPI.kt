@@ -10,7 +10,7 @@ import retrofit2.http.GET
 
 // This is a singleton class, responsible for sending and receiving HTTP requests
 object NetworkAPI {
-    private const val BASE_URL = "https://users.metropolia.fi/~hafiz/mp-info/"
+    private const val BASE_URL = "https://users.metropolia.fi/~peterh/"
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
